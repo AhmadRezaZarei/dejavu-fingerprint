@@ -1,8 +1,11 @@
+from flask import Flask
 import argparse
 import json
 import sys
 from argparse import RawTextHelpFormatter
 from os.path import isdir
+from flask import request
+from werkzeug.utils import secure_filename
 
 from dejavu import Dejavu
 from dejavu.logic.recognizer.file_recognizer import FileRecognizer
@@ -10,6 +13,7 @@ from dejavu.logic.recognizer.microphone_recognizer import MicrophoneRecognizer
 
 DEFAULT_CONFIG_FILE = "dejavu.cnf.SAMPLE"
 
+app = Flask(__name__)
 
 def init(configpath):
     """
@@ -26,7 +30,22 @@ def init(configpath):
     return Dejavu(config)
 
 
+@app.route("/fingerprint", methods= ['POST'])
+def fingerprint_file():
+    f = request.files['file']
+    filepath = "./songs/" + secure_filename(f.filename)
+    f.save(filepath)
+    song_name = request.form['song_name']
+    print(filepath)
+    dejavu.fingerprint_file(filepath)
+    return song_name
+
 if __name__ == '__main__':
+    dejavu = init(DEFAULT_CONFIG_FILE)
+    app.run(host="0.0.0.0", port="5678",debug=True)
+    pass
+
+if __name__ == '__main__w':
     parser = argparse.ArgumentParser(
         description="Dejavu: Audio Fingerprinting library",
         formatter_class=RawTextHelpFormatter)
