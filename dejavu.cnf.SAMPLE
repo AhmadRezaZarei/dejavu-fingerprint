@@ -1,8 +1,8 @@
 {
     "database": {
         "host": "127.0.0.1",
-        "user": "root",
-        "password": "rootpass",
+        "user": "debian-sys-maint",
+        "password": "PnKKvj21RziO2OKf",
         "database": "dejavu"
     },
     "database_type": "mysql"
