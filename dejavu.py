@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 import argparse
 import json
 import sys
@@ -15,6 +15,18 @@ DEFAULT_CONFIG_FILE = "dejavu.cnf.SAMPLE"
 
 app = Flask(__name__)
 
+def convert_bytes_to_string(songs):
+    for key, value in songs.items():
+        if isinstance(value, list):
+            for item in value:
+                if isinstance(item, dict):
+                    convert_bytes_to_string(item)
+        if isinstance(value, bytes):
+            songs[key] = str(value, "utf-8")
+        if isinstance(value, dict):
+            convert_bytes_to_string(value)
+        else:
+            songs[key] = str(value)
 def init(configpath):
     """
     Load config from a JSON file
@@ -40,10 +52,26 @@ def fingerprint_file():
     dejavu.fingerprint_file(filepath)
     return song_name
 
+@app.route("/recognize", methods=['POST'])
+def recognize():
+    f = request.files['file']
+    filepath = "./songs/" + secure_filename(f.filename)
+    f.save(filepath)
+
+    songs = dejavu.recognize(FileRecognizer, filepath)
+    convert_bytes_to_string(songs)
+    
+    return json.dumps(songs, indent=4)
+
+
+
+
 if __name__ == '__main__':
     dejavu = init(DEFAULT_CONFIG_FILE)
     app.run(host="0.0.0.0", port="5678",debug=True)
     pass
+
+
 
 if __name__ == '__main__w':
     parser = argparse.ArgumentParser(
