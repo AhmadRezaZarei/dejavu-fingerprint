@@ -6,10 +6,11 @@ from argparse import RawTextHelpFormatter
 from os.path import isdir
 from flask import request
 from werkzeug.utils import secure_filename
-
+import os
 from dejavu import Dejavu
 from dejavu.logic.recognizer.file_recognizer import FileRecognizer
 from dejavu.logic.recognizer.microphone_recognizer import MicrophoneRecognizer
+from dotenv import load_dotenv
 
 DEFAULT_CONFIG_FILE = "dejavu.cnf.SAMPLE"
 
@@ -49,8 +50,8 @@ def fingerprint_file():
     filepath = "./songs/" + secure_filename(f.filename)
     f.save(filepath)
     song_name = request.form['song_name']
-    print(filepath)
     dejavu.fingerprint_file(filepath)
+    os.remove(filepath)
     return song_name
 
 @app.route("/recognize", methods=['POST'])
@@ -61,18 +62,26 @@ def recognize():
 
     songs = dejavu.recognize(FileRecognizer, filepath)
     convert_bytes_to_string(songs)
-    
+    os.remove(filepath)
     return json.dumps(songs, indent=4)
 
 
-
-
 if __name__ == '__main__':
-    dejavu = init(DEFAULT_CONFIG_FILE)
+    
+    load_dotenv()
+
+    def_conf_path = DEFAULT_CONFIG_FILE
+    
+    env_conf_path = os.getenv('MYSQL_DB_CONFIG_PATH')
+    if env_conf_path != None:
+        def_conf_path = env_conf_path
+
+    print("config path: " + def_conf_path + "\n")
+    
+    dejavu = init(def_conf_path)
+    
     app.run(host="0.0.0.0", port="5678",debug=True)
     pass
-
-
 
 # if __name__ == '__main__w':
 #     parser = argparse.ArgumentParser(

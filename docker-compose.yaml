@@ -1,22 +1,30 @@
 version: '3'
 services:
   db:
-    build:
-      context: ./docker/postgres
-    environment:
-      - POSTGRES_DB=dejavu
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=password
-    networks:
-      - db_network
-  python:
-    build:
-      context: ./docker/python
+    image: mysql
+    restart: unless-stopped
+    env_file:
+      - development.env
     volumes:
-      - .:/code
+      - mysql_db_volume:/var/lib/mysql
+  python:
+    env_file:
+      - development.env
+    build:
+      dockerfile: python.Dockerfile
+    ports:
+      - "0.0.0.0:5678:5678"
     depends_on:
       - db
-    networks:
-      - db_network
-networks:
-  db_network:
+  phpmyadmin:
+    env_file:
+      - development.env
+    depends_on:
+      - db
+    image: phpmyadmin
+    restart: always
+    ports:
+      - "0.0.0.0:8092:80"
+
+volumes:
+  mysql_db_volume:

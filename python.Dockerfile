@@ -7,5 +7,5 @@ RUN apt-get install \
     postgresql postgresql-contrib -y
 RUN pip install numpy scipy matplotlib pydub pyaudio psycopg2 Flask mysql-connector python-dotenv
 COPY . ./
-CMD ls
+CMD python3 dejavu.py
 EXPOSE 5678

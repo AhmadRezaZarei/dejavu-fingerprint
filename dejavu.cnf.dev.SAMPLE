@@ -1,0 +1,9 @@
+{
+    "database": {
+        "host": "db",
+        "user": "debian-sys-maint",
+        "password": "PnKKvj21RziO2OKf",
+        "database": "dejavu"
+    },
+    "database_type": "mysql"
+}
