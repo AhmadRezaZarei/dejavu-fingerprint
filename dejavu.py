@@ -59,7 +59,6 @@ def recognize():
     f = request.files['file']
     filepath = "./songs/" + secure_filename(f.filename)
     f.save(filepath)
-
     songs = dejavu.recognize(FileRecognizer, filepath)
     convert_bytes_to_string(songs)
     os.remove(filepath)
@@ -78,7 +77,11 @@ if __name__ == '__main__':
 
     print("config path: " + def_conf_path + "\n")
     
-    dejavu = init(def_conf_path)
+    try :
+        dejavu = init(def_conf_path)
+        print("dejavu created")
+    except Exception as err:
+        print("exception !!!!! ", err)
     
     app.run(host="0.0.0.0", port="5678",debug=True)
     pass
