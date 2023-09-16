@@ -9,7 +9,7 @@ from werkzeug.utils import secure_filename
 import os
 from dejavu import Dejavu
 from dejavu.logic.recognizer.file_recognizer import FileRecognizer
-from dejavu.logic.recognizer.microphone_recognizer import MicrophoneRecognizer
+# from dejavu.logic.recognizer.microphone_recognizer import MicrophoneRecognizer
 from dotenv import load_dotenv
 
 DEFAULT_CONFIG_FILE = "dejavu.cnf.SAMPLE"
