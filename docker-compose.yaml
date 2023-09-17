@@ -6,7 +6,7 @@ services:
       - MYSQL_DATABASE=dejavu
       - MYSQL_ROOT_PASSWORD=PnKKvj21RziO2OKf
     volumes:
-      - mysql_db_volume2:/var/lib/mysql
+      - mysql_db_volume:/var/lib/mysql
     ports:
       - "3306:3306"
   # python:
@@ -30,4 +30,4 @@ services:
       - "0.0.0.0:8076:80"
       
 volumes:
-  mysql_db_volume3: 
+  mysql_db_volume: 

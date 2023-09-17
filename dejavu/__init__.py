@@ -35,6 +35,13 @@ class Dejavu:
             self.limit = None
         self.__load_fingerprinted_audio_hashes()
 
+    def update_song_meta(self, songId, meta):
+        self.db.update_song_meta(songId, meta)
+        pass
+
+    def fetch_meta_less_songs(self):
+        return self.db.get_meta_less_songs()
+
     def __load_fingerprinted_audio_hashes(self) -> None:
         """
         Keeps a dictionary with the hashes of the fingerprinted songs, in that way is possible to check

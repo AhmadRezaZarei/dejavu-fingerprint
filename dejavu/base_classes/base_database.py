@@ -85,6 +85,14 @@ class BaseDatabase(object, metaclass=abc.ABCMeta):
         pass
 
     @abc.abstractmethod
+    def get_meta_less_songs(self) -> List[Dict[str, str]]:
+        pass
+    
+    @abc.abstractmethod
+    def update_song_meta(self, song_id: int, song_meta: str): 
+        pass
+
+    @abc.abstractmethod
     def get_song_by_id(self, song_id: int) -> Dict[str, str]:
         """
         Brings the song info from the database.

@@ -86,6 +86,17 @@ class CommonDatabase(BaseDatabase, metaclass=abc.ABCMeta):
         with self.cursor() as cur:
             cur.execute(self.UPDATE_SONG_FINGERPRINTED, (song_id,))
 
+    def get_meta_less_songs(self) -> List[Dict[str, str]]:
+        print(self.SELECT_META_LESS_SONGS)
+        with self.cursor(dictionary=True) as cur:
+            cur.execute(self.SELECT_META_LESS_SONGS)
+            return list(cur)
+    
+
+    def update_song_meta(self, song_id: int, song_meta: str): 
+        with self.cursor() as cur:
+            cur.execute(self.UPDATE_SONG_META, (song_meta, str(song_id), ))
+    
     def get_songs(self) -> List[Dict[str, str]]:
         """
         Returns all fully fingerprinted songs in the database

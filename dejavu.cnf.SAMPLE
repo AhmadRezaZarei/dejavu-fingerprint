@@ -2,7 +2,7 @@
     "database": {
         "host": "localhost",
         "user": "root",
-        "password": "root",
+        "password": "PnKKvj21RziO2OKf",
         "database": "dejavu"
     },
     "database_type": "mysql"

@@ -57,11 +57,14 @@ def fingerprint_file():
 
 @app.route("/set-song-meta", methods=['POST'])
 def set_song_meta():
-    pass
+    song_id = request.json["song_id"]
+    song_meta = request.json["song_meta"]
+    dejavu.update_song_meta(song_id, song_meta)
+    return jsonify({"error": None})
 
 @app.route("/meta-less-songs", methods=['GET'])
 def get_meta_less_songs():
-    pass
+    return  jsonify({"songs": dejavu.fetch_meta_less_songs()})
 
 @app.route("/recognize", methods=['POST'])
 def recognize():
