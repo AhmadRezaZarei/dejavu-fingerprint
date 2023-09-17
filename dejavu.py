@@ -54,6 +54,15 @@ def fingerprint_file():
     os.remove(filepath)
     return song_name
 
+
+@app.route("/set-song-meta", methods=['POST'])
+def set_song_meta():
+    pass
+
+@app.route("/meta-less-songs", methods=['GET'])
+def get_meta_less_songs():
+    pass
+
 @app.route("/recognize", methods=['POST'])
 def recognize():
     f = request.files['file']
