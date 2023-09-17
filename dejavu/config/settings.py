@@ -4,7 +4,7 @@
 SONG_ID = "song_id"
 SONG_NAME = 'song_name'
 RESULTS = 'results'
-
+SONG_META = 'song_meta'
 HASHES_MATCHED = 'hashes_matched_in_input'
 
 # Hashes fingerprinted in the db.

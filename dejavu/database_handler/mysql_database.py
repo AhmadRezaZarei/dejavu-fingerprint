@@ -74,7 +74,7 @@ class MySQLDatabase(CommonDatabase):
     SELECT_ALL = f"SELECT `{FIELD_SONG_ID}`, `{FIELD_OFFSET}` FROM `{FINGERPRINTS_TABLENAME}`;"
 
     SELECT_SONG = f"""
-        SELECT `{FIELD_SONGNAME}`, HEX(`{FIELD_FILE_SHA1}`) AS `{FIELD_FILE_SHA1}`, `{FIELD_TOTAL_HASHES}`
+        SELECT `{FIELD_SONGNAME}`, HEX(`{FIELD_FILE_SHA1}`) AS `{FIELD_FILE_SHA1}`, `{FIELD_TOTAL_HASHES}`, `{FIELD_META}`
         FROM `{SONGS_TABLENAME}`
         WHERE `{FIELD_SONG_ID}` = %s;
     """
@@ -93,6 +93,7 @@ class MySQLDatabase(CommonDatabase):
         ,   `{FIELD_SONGNAME}`
         ,   HEX(`{FIELD_FILE_SHA1}`) AS `{FIELD_FILE_SHA1}`
         ,   `{FIELD_TOTAL_HASHES}`
+        ,   `{FIELD_META}`
         ,   `date_created`
         FROM `{SONGS_TABLENAME}`
         WHERE `{FIELD_FINGERPRINTED}` = 1;

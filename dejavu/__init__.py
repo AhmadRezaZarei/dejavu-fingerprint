@@ -14,7 +14,7 @@ from dejavu.config.settings import (DEFAULT_FS, DEFAULT_OVERLAP_RATIO,
                                     FINGERPRINTED_CONFIDENCE,
                                     FINGERPRINTED_HASHES, HASHES_MATCHED,
                                     INPUT_CONFIDENCE, INPUT_HASHES, OFFSET,
-                                    OFFSET_SECS, SONG_ID, SONG_NAME, TOPN)
+                                    OFFSET_SECS, SONG_ID, SONG_NAME, TOPN, SONG_META)
 from dejavu.logic.fingerprint import fingerprint
 
 
@@ -206,6 +206,7 @@ class Dejavu:
                 SONG_ID: song_id,
                 SONG_NAME: song_name.encode("utf8"),
                 INPUT_HASHES: queried_hashes,
+                SONG_META: song.meta,
                 FINGERPRINTED_HASHES: song_hashes,
                 HASHES_MATCHED: hashes_matched,
                 # Percentage regarding hashes matched vs hashes from the input.
