@@ -68,6 +68,12 @@ def get_meta_less_songs():
 
 @app.route("/recognize", methods=['POST'])
 def recognize():
+
+
+
+    if "file" not in request.files.keys():
+        return {"error": {"type": 400, "message": "can not found file"}}, 400
+    
     f = request.files['file']
     filepath = "./songs/" + secure_filename(f.filename)
     f.save(filepath)
