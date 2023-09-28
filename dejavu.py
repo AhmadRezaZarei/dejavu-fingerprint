@@ -52,7 +52,7 @@ def fingerprint_file():
     song_name = request.form['song_name']
     dejavu.fingerprint_file(filepath)
     os.remove(filepath)
-    return song_name
+    return {"error": None}
 
 
 @app.route("/set-song-meta", methods=['POST'])
@@ -69,9 +69,8 @@ def get_meta_less_songs():
 @app.route("/recognize", methods=['POST'])
 def recognize():
 
-
-
-    if "file" not in request.files.keys():
+    if 'file' not in request.files.keys():
+        print("file is not on the request")
         return {"error": {"type": 400, "message": "can not found file"}}, 400
     
     f = request.files['file']
@@ -80,7 +79,8 @@ def recognize():
     songs = dejavu.recognize(FileRecognizer, filepath)
     convert_bytes_to_string(songs)
     os.remove(filepath)
-    return json.dumps(songs, indent=4)
+
+    return {"result": songs }, 200
 
 
 if __name__ == '__main__':

@@ -10,7 +10,7 @@ import dejavu.logic.decoder as decoder
 from dejavu.base_classes.base_database import get_database
 from dejavu.config.settings import (DEFAULT_FS, DEFAULT_OVERLAP_RATIO,
                                     DEFAULT_WINDOW_SIZE, FIELD_FILE_SHA1,
-                                    FIELD_TOTAL_HASHES,
+                                    FIELD_TOTAL_HASHES, FIELD_META,
                                     FINGERPRINTED_CONFIDENCE,
                                     FINGERPRINTED_HASHES, HASHES_MATCHED,
                                     INPUT_CONFIDENCE, INPUT_HASHES, OFFSET,
@@ -213,7 +213,7 @@ class Dejavu:
                 SONG_ID: song_id,
                 SONG_NAME: song_name.encode("utf8"),
                 INPUT_HASHES: queried_hashes,
-                SONG_META: song.meta,
+                SONG_META: song.get(FIELD_META, None),
                 FINGERPRINTED_HASHES: song_hashes,
                 HASHES_MATCHED: hashes_matched,
                 # Percentage regarding hashes matched vs hashes from the input.
