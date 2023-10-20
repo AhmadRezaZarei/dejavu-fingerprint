@@ -7,14 +7,30 @@ from os.path import isdir
 from flask import request
 from werkzeug.utils import secure_filename
 import os
+import time
 from dejavu import Dejavu
+from pydub import AudioSegment
 from dejavu.logic.recognizer.file_recognizer import FileRecognizer
 # from dejavu.logic.recognizer.microphone_recognizer import MicrophoneRecognizer
 from dotenv import load_dotenv
+from acrcloud import AcrCloud
 
 DEFAULT_CONFIG_FILE = "dejavu.cnf.SAMPLE"
 
 app = Flask(__name__)
+
+def convert_mp3_to_ogg(filePath, export_dir):
+    resultName = export_dir + "/ exported_ogg_" + str(time.time()) + ".ogg"
+    AudioSegment.from_mp3(filePath).export(resultName, format="ogg")
+    return resultName
+
+def trim_mp3(filepath, export_dir, start, end):
+    song = AudioSegment.from_mp3(filepath)
+    exp = song[start : end]
+    resultName = export_dir + "/exported_trim_" + str(time.time()) + ".mp3"
+    exp.export(resultName, format="mp3")
+    return resultName
+
 
 def convert_bytes_to_string(songs):
     for key, value in songs.items():
@@ -80,7 +96,30 @@ def recognize():
     convert_bytes_to_string(songs)
     os.remove(filepath)
 
-    return {"result": songs }, 200
+    foundSongs = songs["results"]
+    matched_index = 0
+    matched_confidence = 0.0
+    for idx, fSong in enumerate(foundSongs):
+        if idx == 0:
+            matched_confidence = float(fSong["input_confidence"])
+            matched_index = 0
+            continue
+        cur_confidence = float(fSong["input_confidence"])
+        if cur_confidence > matched_confidence:
+            matched_index = idx
+            matched_confidence = cur_confidence
+    
+    if matched_confidence > 0.2:
+        return {"matched_song": foundSongs[matched_index] }, 200
+    
+    trim_mp3_path = trim_mp3(filepath, "songs", 0, 9500)
+
+    cnv_ogg = convert_mp3_to_ogg(trim_mp3_path, "songs")
+
+    os.remove(trim_mp3_path)
+
+    statusCode, jsonResult = acrCloud.recognize(cnv_ogg)
+    return jsonResult, statusCode
 
 
 if __name__ == '__main__':
@@ -94,12 +133,13 @@ if __name__ == '__main__':
         def_conf_path = env_conf_path
 
     print("config path: " + def_conf_path)
-    
-#    try :
+
     dejavu = init(def_conf_path)
-#    print("dejavu created")
-#    except Exception as err:
-#        print("exception !!!!! ", err)
+
+    access_key = accessKey = "ddedafe38ced443465d976877e1598c8"
+    access_secret = "qgFa6rdTmFkIZkHsD2ymDXvXiOT4yqxneRjeqKcM"
+    req_url = "https://identify-eu-west-1.acrcloud.com/v1/identify"
+
+    acrCloud = AcrCloud(access_key, access_secret, req_url)
     
     app.run(host="0.0.0.0", port="5678",debug=True)
-    pass

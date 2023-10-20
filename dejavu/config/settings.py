@@ -32,7 +32,7 @@ DATABASES = {
 
 # TABLE SONGS
 SONGS_TABLENAME = "songs"
-
+SETTINGS_TABLENAME = "settings"
 # SONGS FIELDS
 FIELD_SONG_ID = 'song_id'
 FIELD_SONGNAME = 'song_name'
@@ -47,6 +47,7 @@ FINGERPRINTS_TABLENAME = "fingerprints"
 # FINGERPRINTS FIELDS
 FIELD_HASH = 'hash'
 FIELD_OFFSET = 'offset'
+
 
 # FINGERPRINTS CONFIG:
 # This is used as connectivity parameter for scipy.generate_binary_structure function. This parameter

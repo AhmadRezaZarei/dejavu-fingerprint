@@ -9,9 +9,7 @@
             "name": "Launch package",
             "type": "python",
             "request": "launch",
-            "mode": "debug",
-            "program": "${workspaceFolder}/dejavu.py",
-            "cwd": "${workspaceFolder}"
+            "program": "${workspaceFolder}/dejavu.py"
         }
     ]
 }

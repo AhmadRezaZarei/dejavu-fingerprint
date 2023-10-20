@@ -209,11 +209,17 @@ class Dejavu:
             nseconds = round(float(offset) / DEFAULT_FS * DEFAULT_WINDOW_SIZE * DEFAULT_OVERLAP_RATIO, 5)
             hashes_matched = dedup_hashes[song_id]
 
+            song_meta = song.get(FIELD_META, None)
+            if song_meta == None :
+                song_meta = ""
+            else : 
+                song_meta = song_meta.encode("utf8")
+
             song = {
                 SONG_ID: song_id,
                 SONG_NAME: song_name.encode("utf8"),
                 INPUT_HASHES: queried_hashes,
-                SONG_META: song.get(FIELD_META, None),
+                SONG_META: song_meta,
                 FINGERPRINTED_HASHES: song_hashes,
                 HASHES_MATCHED: hashes_matched,
                 # Percentage regarding hashes matched vs hashes from the input.

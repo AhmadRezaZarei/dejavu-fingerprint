@@ -29,6 +29,8 @@ class MySQLDatabase(CommonDatabase):
         ) ENGINE=INNODB;
     """
 
+
+
     CREATE_FINGERPRINTS_TABLE = f"""
         CREATE TABLE IF NOT EXISTS `{FINGERPRINTS_TABLENAME}` (
             `{FIELD_HASH}` BINARY(10) NOT NULL
