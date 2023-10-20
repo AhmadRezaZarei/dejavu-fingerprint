@@ -169,13 +169,13 @@ def recognize():
         return {"error": {type: status_code, "message": json.dumps(spotify_result)}}, status_code
     
     # fingerprint the song
-    dejavu.fingerprint_file(filepath, spotify_name)
+    dejavu.fingerprint_file(filepath, spotify_name, json.dumps(spotify_result))
 
     os.remove(filepath)
 
     # send request to spotify
 
-    return jsonResult, statusCode
+    return spotify_result, statusCode
 
 
 if __name__ == '__main__':
@@ -203,5 +203,6 @@ if __name__ == '__main__':
     spotify_client_secret = "6e1485a83321461eb963433c823fb2fb" 
 
     spotify_client = Spotify(spotify_client_id, spotify_client_secret)
+    
 
     app.run(host="0.0.0.0", port="5678",debug=True)

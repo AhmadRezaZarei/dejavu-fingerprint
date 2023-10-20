@@ -56,7 +56,7 @@ class MySQLDatabase(CommonDatabase):
     """
 
     INSERT_SONG = f"""
-        INSERT INTO `{SONGS_TABLENAME}` (`{FIELD_SONGNAME}`,`{FIELD_FILE_SHA1}`,`{FIELD_TOTAL_HASHES}, `{FIELD_META}`)
+        INSERT INTO `{SONGS_TABLENAME}` (`{FIELD_SONGNAME}`,`{FIELD_FILE_SHA1}`,`{FIELD_TOTAL_HASHES}`, `{FIELD_META}`)
         VALUES (%s, UNHEX(%s), %s, %s);
     """
 
@@ -146,7 +146,7 @@ class MySQLDatabase(CommonDatabase):
         # the previous process.
         Cursor.clear_cache()
 
-    def insert_song(self, song_name: str, file_hash: str, total_hashes: int, song_meta: None) -> int:
+    def insert_song(self, song_name: str, file_hash: str, total_hashes: int, song_meta: str = None) -> int:
         """
         Inserts a song name into the database, returns the new
         identifier of the song.
@@ -156,6 +156,10 @@ class MySQLDatabase(CommonDatabase):
         :param total_hashes: amount of hashes to be inserted on fingerprint table.
         :return: the inserted id.
         """
+        # print("\n")
+        # print(self.INSERT_SONG % (song_name, file_hash, total_hashes, song_meta))
+        # print("\n")
+        # song_meta = "aaa"
         with self.cursor() as cur:
             cur.execute(self.INSERT_SONG, (song_name, file_hash, total_hashes, song_meta))
             return cur.lastrowid
