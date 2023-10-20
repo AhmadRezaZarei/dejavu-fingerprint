@@ -125,7 +125,7 @@ class Dejavu:
         pool.close()
         pool.join()
 
-    def fingerprint_file(self, file_path: str, song_name: str = None) -> None:
+    def fingerprint_file(self, file_path: str, song_name: str = None, song_meta: str = None) -> None:
         """
         Given a path to a file the method generates hashes for it and stores them in the database
         for later be queried.
@@ -145,7 +145,7 @@ class Dejavu:
                 # self.limit,
                 # song_name=song_name
             )
-            sid = self.db.insert_song(song_name, file_hash, len(hashes))
+            sid = self.db.insert_song(song_name, file_hash, len(hashes), song_meta)
 
             self.db.insert_hashes(sid, hashes)
             self.db.set_song_fingerprinted(sid)

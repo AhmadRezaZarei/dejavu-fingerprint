@@ -130,7 +130,7 @@ class CommonDatabase(BaseDatabase, metaclass=abc.ABCMeta):
             cur.execute(self.INSERT_FINGERPRINT, (fingerprint, song_id, offset))
 
     @abc.abstractmethod
-    def insert_song(self, song_name: str, file_hash: str, total_hashes: int) -> int:
+    def insert_song(self, song_name: str, file_hash: str, total_hashes: int, song_meta: None) -> int:
         """
         Inserts a song name into the database, returns the new
         identifier of the song.

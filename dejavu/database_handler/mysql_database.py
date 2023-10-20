@@ -56,8 +56,8 @@ class MySQLDatabase(CommonDatabase):
     """
 
     INSERT_SONG = f"""
-        INSERT INTO `{SONGS_TABLENAME}` (`{FIELD_SONGNAME}`,`{FIELD_FILE_SHA1}`,`{FIELD_TOTAL_HASHES}`)
-        VALUES (%s, UNHEX(%s), %s);
+        INSERT INTO `{SONGS_TABLENAME}` (`{FIELD_SONGNAME}`,`{FIELD_FILE_SHA1}`,`{FIELD_TOTAL_HASHES}, `{FIELD_META}`)
+        VALUES (%s, UNHEX(%s), %s, %s);
     """
 
     # SELECTS
@@ -146,7 +146,7 @@ class MySQLDatabase(CommonDatabase):
         # the previous process.
         Cursor.clear_cache()
 
-    def insert_song(self, song_name: str, file_hash: str, total_hashes: int) -> int:
+    def insert_song(self, song_name: str, file_hash: str, total_hashes: int, song_meta: None) -> int:
         """
         Inserts a song name into the database, returns the new
         identifier of the song.
@@ -157,7 +157,7 @@ class MySQLDatabase(CommonDatabase):
         :return: the inserted id.
         """
         with self.cursor() as cur:
-            cur.execute(self.INSERT_SONG, (song_name, file_hash, total_hashes))
+            cur.execute(self.INSERT_SONG, (song_name, file_hash, total_hashes, song_meta))
             return cur.lastrowid
 
     def __getstate__(self):

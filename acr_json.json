@@ -1,0 +1,82 @@
+{
+    "cost_time": 1.3340001106262,
+    "metadata": {
+        "music": [
+            {
+                "acrid": "c61be0a87f32c8172bd7477dca0a4d1c",
+                "album": {
+                    "name": "Donya"
+                },
+                "artists": [
+                    {
+                        "name": "Habib"
+                    }
+                ],
+                "db_begin_time_offset_ms": 0,
+                "db_end_time_offset_ms": 8920,
+                "duration_ms": 225985,
+                "external_ids": {
+                    "isrc": "GBKQU1558400",
+                    "upc": "5054281768628"
+                },
+                "external_metadata": {
+                    "deezer": {
+                        "album": {
+                            "id": "10700698",
+                            "name": "Donya"
+                        },
+                        "artists": [
+                            {
+                                "id": "1247796",
+                                "name": "Habib"
+                            }
+                        ],
+                        "track": {
+                            "id": "102983188",
+                            "name": "Donya"
+                        }
+                    },
+                    "spotify": {
+                        "album": {
+                            "id": "02ux9uuIMCjmbkVEa44prG",
+                            "name": "Persian Pop Collection"
+                        },
+                        "artists": [
+                            {
+                                "id": "56lhU6uB9sNN4xIRxpYCp8",
+                                "name": "Habib"
+                            }
+                        ],
+                        "track": {
+                            "id": "0Fg5YPvrHzQ8o735z3S4qQ",
+                            "name": "Donya - Original Mix"
+                        }
+                    },
+                    "youtube": {
+                        "vid": "CDyuOWjG2LI"
+                    }
+                },
+                "genres": [
+                    {
+                        "name": "Rock"
+                    }
+                ],
+                "label": "C.P Music",
+                "play_offset_ms": 8840,
+                "release_date": "2015-08-04",
+                "result_from": 3,
+                "sample_begin_time_offset_ms": 0,
+                "sample_end_time_offset_ms": 8920,
+                "score": 100,
+                "title": "Donya"
+            }
+        ],
+        "timestamp_utc": "2023-10-20 06:49:29"
+    },
+    "result_type": 0,
+    "status": {
+        "code": 0,
+        "msg": "Success",
+        "version": "1.0"
+    }
+}

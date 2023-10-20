@@ -14,6 +14,7 @@ from dejavu.logic.recognizer.file_recognizer import FileRecognizer
 # from dejavu.logic.recognizer.microphone_recognizer import MicrophoneRecognizer
 from dotenv import load_dotenv
 from acrcloud import AcrCloud
+from spotify import Spotify
 
 DEFAULT_CONFIG_FILE = "dejavu.cnf.SAMPLE"
 
@@ -30,6 +31,36 @@ def trim_mp3(filepath, export_dir, start, end):
     resultName = export_dir + "/exported_trim_" + str(time.time()) + ".mp3"
     exp.export(resultName, format="mp3")
     return resultName
+
+def get_spotify_id(jsonResponse):
+    
+    if "metadata" not in jsonResponse:
+        return None, None
+
+    metadata = jsonResponse["metadata"]
+
+    if "music" not in metadata:
+        return None, None
+    
+    musics = metadata["music"]
+    if len(musics) == 0:
+        return None, None
+    
+    music = musics[0]
+
+    if "external_metadata" not in music:
+        return None, None
+    
+    ext_metadata = music["external_metadata"]
+    
+    if "spotify" not in ext_metadata:
+        return None, None
+    
+    spotify_metadata = ext_metadata["spotify"]
+
+    return spotify_metadata["track"]["id"], spotify_metadata["track"]["name"]
+
+    
 
 
 def convert_bytes_to_string(songs):
@@ -113,13 +144,11 @@ def recognize():
     
     trim_mp3_path = trim_mp3(filepath, "songs", 0, 9500)
     
-    os.remove(filepath)
-
     cnv_ogg = convert_mp3_to_ogg(trim_mp3_path, "songs")
 
     os.remove(trim_mp3_path)
 
-    statusCode, jsonResult = acrCloud.recognize(cnv_ogg)
+    statusCode, jsonResult = acr_cloud.recognize(cnv_ogg)
 
     os.remove(cnv_ogg)
 
@@ -127,6 +156,22 @@ def recognize():
         return {"error": {type: statusCode, "message": json.dumps(jsonResult)}}, statusCode
     
     # find spotify id
+
+    spotify_id, spotify_name = get_spotify_id(jsonResult)
+
+    if spotify_id == None:
+        return {"error": {type: 404, "message": "not found"}}, 404
+    
+
+    spotify_result, status_code = spotify_client.get_track_features(spotify_id)
+
+    if status_code != 200:
+        return {"error": {type: status_code, "message": json.dumps(spotify_result)}}, status_code
+    
+    # fingerprint the song
+    dejavu.fingerprint_file(filepath, spotify_name)
+
+    os.remove(filepath)
 
     # send request to spotify
 
@@ -151,6 +196,12 @@ if __name__ == '__main__':
     access_secret = "qgFa6rdTmFkIZkHsD2ymDXvXiOT4yqxneRjeqKcM"
     req_url = "https://identify-eu-west-1.acrcloud.com/v1/identify"
 
-    acrCloud = AcrCloud(access_key, access_secret, req_url)
+    acr_cloud = AcrCloud(access_key, access_secret, req_url)
+
     
+    spotify_client_id = "e7ced6ce42cc403e8c08e0ea69ca281e"
+    spotify_client_secret = "6e1485a83321461eb963433c823fb2fb" 
+
+    spotify_client = Spotify(spotify_client_id, spotify_client_secret)
+
     app.run(host="0.0.0.0", port="5678",debug=True)
