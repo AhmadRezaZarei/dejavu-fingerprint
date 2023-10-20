@@ -94,7 +94,6 @@ def recognize():
     f.save(filepath)
     songs = dejavu.recognize(FileRecognizer, filepath)
     convert_bytes_to_string(songs)
-    os.remove(filepath)
 
     foundSongs = songs["results"]
     matched_index = 0
@@ -113,12 +112,24 @@ def recognize():
         return {"matched_song": foundSongs[matched_index] }, 200
     
     trim_mp3_path = trim_mp3(filepath, "songs", 0, 9500)
+    
+    os.remove(filepath)
 
     cnv_ogg = convert_mp3_to_ogg(trim_mp3_path, "songs")
 
     os.remove(trim_mp3_path)
 
     statusCode, jsonResult = acrCloud.recognize(cnv_ogg)
+
+    os.remove(cnv_ogg)
+
+    if statusCode != 200:
+        return {"error": {type: statusCode, "message": json.dumps(jsonResult)}}, statusCode
+    
+    # find spotify id
+
+    # send request to spotify
+
     return jsonResult, statusCode
 
 

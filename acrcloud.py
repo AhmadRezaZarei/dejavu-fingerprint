@@ -45,4 +45,5 @@ class AcrCloud:
 
         r = requests.post(self.req_url, files=files, data=data)
         r.encoding = "utf-8"
-        return r.status_code, r.json
+        
+        return r.status_code, r.json()
